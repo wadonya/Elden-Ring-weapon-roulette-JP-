@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>エルデンリング武器ルーレット</title>
+    <style>
+        body {
+            background-color: #1a1f2e;
+            color: #fff;
+            font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .category-btn {
+            background-color: #2a3042;
+            border-radius: 20px;
+            padding: 8px 16px;
+            margin: 4px;
+            transition: all 0.3s;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .category-btn.active {
+            background-color: #ffc107;
+            color: #000;
+        }
+        
+        .category-btn:hover {
+            background-color: #3a4055;
+        }
+        
+        .wheel-container {
+            position: relative;
+            width: 500px;
+            height: 500px;
+            margin: 0 auto;
+        }
+        
+        .wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background-color: #2c303d;
+            position: relative;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            transition: transform 0.1s ease-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .wheel-center {
+            width: 60px;
+            height: 60px;
+            background-color: #ffc107;
+            border-radius: 50%;
+            z-index: 10;
+            position: absolute;
+        }
+        
+        .wheel-item {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            transform-origin: bottom center;
+            width: 2px;
+            height: 50%;
+            color: #ffc107;
+            font-size: 10px;
+            overflow: visible;
+            white-space: nowrap;
+        }
+        
+        .weapon-text {
+            position: absolute;
+            transform: rotate(90deg) translateX(-50%);
+            transform-origin: left center;
+            font-size: 10px;
+        }
+        
+        .wheel-ring {
+            position: absolute;
+            width: 90%;
+            height: 90%;
+            border-radius: 50%;
+            border: 2px solid #ffc107;
+            opacity: 0.7;
+            pointer-events: none;
+        }
+        
+        .action-btn {
+            background-color: #ffc107;
+            color: #000;
+            border-radius: 25px;
+            padding: 12px 30px;
+            font-weight: bold;
+            transition: all 0.3s;
+            margin: 0 10px;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .action-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .stop-btn {
+            background-color: #f44336;
+            color: #fff;
+        }
+        
+        .pointer {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 20px solid #f44336;
+            z-index: 100;
+        }
+        
+        .result-box {
+            background-color: #2a3042;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            min-height: 80px;
+            width: 100%;
+            max-width: 500px;
+            margin: 20px auto;
+            text-align: center;
+        }
+        
+        .credit {
+            opacity: 0.6;
+            font-size: 14px;
+            color: #ffc107;
+            margin-left: 10px;
+        }
+        
+        h1 {
+            font-size: 32px;
+            color: #ffc107;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        h2 {
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .flex {
+            display: flex;
+        }
+        
+        .justify-center {
+            justify-content: center;
+        }
+        
+        .items-center {
+            align-items: center;
+        }
+        
+        .flex-col {
+            flex-direction: column;
+        }
+        
+        .flex-wrap {
+            flex-wrap: wrap;
+        }
+        
+        .text-center {
+            text-align: center;
+        }
+        
+        .mt-8 {
+            margin-top: 32px;
+        }
+        
+        .mb-8 {
+            margin-bottom: 32px;
+        }
+        
+        .category-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 24px;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .min-h-screen {
+            min-height: 100vh;
+        }
+
+        .w-full {
+            width: 100%;
+        }
+        
+        .font-bold {
+            font-weight: bold;
+        }
+        
+        .text-2xl {
+            font-size: 24px;
+        }
+        
+        .text-yellow-400 {
+            color: #ffc107;
+        }
+        
+        @media (max-width: 640px) {
+            .wheel-container {
+                width: 300px;
+                height: 300px;
+            }
+            
+            .category-container {
+                max-width: 95vw;
+                overflow-x: auto;
+                padding-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center">
+    <div class="w-full text-center">
+        <h1>エルデンリング武器ルーレット <span class="credit">@wadonya_ch</span></h1>
+    </div>
+    
+    <div class="category-container">
+        <button class="category-btn active" data-category="all">全て</button>
+        <button class="category-btn" data-category="短剣">短剣</button>
+        <button class="category-btn" data-category="投擲剣">投擲剣</button>
+        <button class="category-btn" data-category="直剣">直剣</button>
+        <button class="category-btn" data-category="軽大剣">軽大剣</button>
+        <button class="category-btn" data-category="大剣">大剣</button>
+        <button class="category-btn" data-category="特大剣">特大剣</button>
+        <button class="category-btn" data-category="刺剣">刺剣</button>
+        <button class="category-btn" data-category="重刺剣">重刺剣</button>
+        <button class="category-btn" data-category="曲剣">曲剣</button>
+        <button class="category-btn" data-category="大曲剣">大曲剣</button>
+        <button class="category-btn" data-category="逆手剣">逆手剣</button>
+        <button class="category-btn" data-category="刀">刀</button>
+        <button class="category-btn" data-category="大刀">大刀</button>
+        <button class="category-btn" data-category="両刃剣">両刃剣</button>
+        <button class="category-btn" data-category="斧">斧</button>
+        <button class="category-btn" data-category="大斧">大斧</button>
+        <button class="category-btn" data-category="槌">槌</button>
+        <button class="category-btn" data-category="フレイル">フレイル</button>
+        <button class="category-btn" data-category="大槌">大槌</button>
+        <button class="category-btn" data-category="特大武器">特大武器</button>
+        <button class="category-btn" data-category="槍">槍</button>
+        <button class="category-btn" data-category="大槍">大槍</button>
+        <button class="category-btn" data-category="斧槍">斧槍</button>
+        <button class="category-btn" data-category="鎌">鎌</button>
+        <button class="category-btn" data-category="鞭">鞭</button>
+        <button class="category-btn" data-category="拳">拳</button>
+        <button class="category-btn" data-category="格闘">格闘</button>
+        <button class="category-btn" data-category="爪">爪</button>
+        <button class="category-btn" data-category="獣爪">獣爪</button>
+        <button class="category-btn" data-category="調香瓶">調香瓶</button>
+        <button class="category-btn" data-category="刺突盾">刺突盾</button>
+    </div>
+    
+    <div class="wheel-container">
+        <div class="pointer"></div>
+        <div class="wheel" id="wheel"></div>
+    </div>
+    
+    <div class="flex justify-center mt-8">
+        <button id="startBtn" class="action-btn">スタート</button>
+        <button id="stopBtn" class="action-btn stop-btn">ストップ</button>
+    </div>
+    
+    <div class="result-box">
+        <h2>選ばれた武器</h2>
+        <div id="result" class="text-yellow-400 text-2xl font-bold">-</div>
+    </div>
+    
+    <script>
+        // 武器データ
+        const weaponCategories = {
+            "短剣": ["黄銅の短刀", "大型ナイフ", "輝石のクリス", "黒き刃", "結晶ナイフ", "蠍の針", "慈悲の短剣", "使命の刃", "祝祭の手鎌", "象牙の手鎌", "ダガー", "血汚れた短刀", "チンクエディア", "パリングダガー", "火の騎士の短剣", "マンゴーシュ", "レドゥビア", "脇差"],
+            "投擲剣": ["流紋の短剣"],
+            "直剣": ["石鞘の剣", "エオヒドの宝剣", "黄金の墓標", "カーリアの騎士剣", "儀仗の直剣", "貴人の細剣", "君主軍の直剣", "結晶剣", "杖剣", "ショートソード", "戦鷹の爪剣", "ダークソード", "トリーナの剣", "トリーナの昏剣", "秘文字の剣", "腐敗した結晶剣", "古びた直剣", "ブロードソード", "ミケラの騎士剣", "夜と炎の剣", "ライトソード", "ラズリの輝石剣", "ロングソード"],
+            "軽大剣": ["レダの剣", "レディソード", "レラーナの双剣"],
+            "大剣": ["暗月の大剣", "黄金律の大剣", "大トカゲの大剣", "オルドビスの大剣", "ガーゴイルの黒剣", "ガーゴイルの大剣", "神の遺剣", "騎士大剣", "クレイモア", "君主軍の大剣", "劫罰の大剣", "孤牢の大剣", "死かき棒", "失地騎士の大剣", "鉄の大剣", "白王の剣", "バスタードソード", "二又の大剣", "フランベルジュ", "ヘルフェンの尖塔", "冒涜の聖剣", "マレー家の執行剣", "ミエロスの剣", "分かたれぬ双児の剣"],
+            "特大剣": ["遺跡の大剣", "王家のグレートソード", "神狩りの剣", "グレートソード", "剣接ぎの大剣", "古隕鉄の大剣", "ツヴァイヘンダー", "トロルの黄金剣", "トロルの騎士剣", "番犬の大剣", "火の騎士の大剣", "星砕きの大剣", "マリケスの黒き剣", "ムーンリデルの騎士剣", "ラダーンの大剣(王)", "ラダーンの大剣(光)"],
+            "刺剣": ["エストック", "カーリアの魔術剣", "蟻棘のレイピア", "貴人のエストック", "貴腐騎士の剣", "氷結の針", "レイピア", "ロジェールの刺剣"],
+            "重刺剣": ["神肌縫い", "クウィラインの大剣", "グレート・エペ", "ソードランス", "血のヘリケー", "竜王の岩剣"],
+            "曲剣": ["アステールの薄羽", "グロスメッサー", "山賊の湾刀", "死体漁りの曲剣", "シミター", "シャムシール", "獣人の曲刀", "ショーテル", "蝕のショーテル", "角の戦士の曲剣", "蟷螂刀", "ノクスの流体剣", "ファルクス", "ファルシオン", "蛇神の曲刀", "溶岩刀", "ラーナの舞踏剣", "流水の曲剣", "霊の剣"],
+            "大曲剣": ["忌み子の大刀", "黒王の大剣", "ザミェルの湾刀", "斬馬刀", "獣人の大曲刀", "僧兵の炎姿刀", "角の戦士の大曲剣", "フレイヤの大剣", "モーゴットの呪剣", "土竜の鱗剣", "猟犬の長牙"],
+            "逆手剣": ["逆手剣", "呪剣士の円刃", "流紋の円刃"],
+            "刀": ["隕鉄の刀", "打刀", "屍山血河", "蛇骨の刀", "長牙", "マレニアの義手刀", "名刀月隠", "夜の刃", "竜鱗刀", "連星剣"],
+            "大刀": ["大刀", "羅刹の大刀", "竜狩りの大刀"],
+            "両刃剣": ["エウポリア", "エレオノーラの双薙刀", "ガーゴイルの黒両刃", "ガーゴイルの両刃剣", "神肌剥ぎ", "黒鉄の両刃剣", "ツインナイトソード", "ツインブレード"],
+            "斧": ["生贄の斧", "死の騎士の双斧", "祝祭の鉈", "歯列の斧", "鉄の鉈", "ハイランドアクス", "バトルアクス", "波紋の剣", "ハンドアクス", "氷殻の斧", "二又舌の手斧", "二又の手斧", "メスメル兵の斧", "歪んだ斧", "嵐鷹の斧", "流紋の斧", "ローゼスの斧"],
+            "大斧": ["忌み潰しの大鉈", "ガーゴイルの大斧", "ガーゴイルの黒斧", "解体包丁", "グレートアクス", "ゴドリックの王斧", "錆び付いた錨", "死の騎士の長柄斧", "断胴の大鉈", "翼の大角", "泥濘の大鉈", "長柄鉈", "ボニの解体包丁", "三日月斧"],
+            "槌": ["石の棍棒", "ヴァレーの花束", "ウォーピック", "牙付き棍棒", "クラブ", "使者たちの笛", "僧兵の炎姿槌", "ノクスの流体槌", "花岩の槌", "ハンマー", "百智の王笏", "曲り棍棒", "マリカの槌", "メイス", "モーニングスター", "指輪指"],
+            "フレイル": ["落とし子の星々", "家族の首", "フレイル", "蛇のフレイル", "夜騎兵のフレイル", "連接棍"],
+            "大槌": ["大角の槌", "グレートスターズ", "グレートメイス", "黒鉄の大槌", "使者たちの長笛", "獣爪の大槌", "祝祭の大頭蓋", "世界喰らいの王笏", "尊顔の燭台", "積石の槌", "つるはし", "バトルハンマー", "腐敗したバトルハンマー", "曲り大棍棒", "ラージクラブ", "流紋の大槌"],
+            "特大武器": ["影輪草の大花", "鍛冶床ハンマー", "ギーザの車輪", "巨人砕き", "グレートクラブ", "化身の儀仗", "ゴーレムの斧槍", "ゴッドフレイの王斧", "司教の大炎槌", "使者たちの扇笛", "星獣の顎", "大竜爪", "血鬼の腕", "デボニアの大槌", "闘士の大斧", "トロルハンマー", "番犬の錫杖", "腐敗した大斧", "腐敗した儀仗", "見つめる指"],
+            "槍": ["貴腐騎士の槍", "グランサクスの雷", "結晶槍", "死儀礼の槍", "十文字薙刀", "祝祭の肋骨鋤", "ショートスピア", "スピア", "責問燭台", "血鬼のフォーク", "鉄の槍", "棘棍", "泥人の銛", "パイク", "速槍", "パルチザン", "腐敗した結晶槍", "ポールトーチ", "流紋の槍"],
+            "大槍": ["ヴァイクの戦槍", "逆棘の杖槍", "串刺し公の槍", "シルリアの樹槍", "大蛇狩り", "血鬼の聖槍", "ツリースピア", "メスメル兵の槍", "モーグウィンの聖槍", "ランス"],
+            "斧槍": ["黄金のハルバード", "ガーゴイルの黒斧槍", "ガーゴイルの斧槍", "欠波紋の斧槍", "グレイブ", "失地騎士の斧槍", "宿将の軍旗", "蕾の薙刀", "ハルバード", "卑兵のショーテル", "卑兵のノコギリ", "蟲のグレイブ", "守人の剣槍", "夜騎兵のグレイブ", "竜のハルバード", "ルッツエルン", "霊のグレイブ", "ローレッタの戦鎌"],
+            "鎌": ["大鎌", "光輪のサイス", "黒曜のラーミナ", "翼の鎌", "墓場の大鎌"],
+            "鞭": ["茨鞭", "ウィップ", "ウルミ", "巨人の赤髪", "歯の鞭", "ホスローの花弁", "溶岩鞭の燭台"],
+            "拳": ["カタール", "棘球拳", "狂手", "ゴーレムの拳", "宿将の義足", "縋り付く手骨", "スパイクセスタス", "セスタス", "接がれた飛竜", "ティエリエの隠し針", "鉄球拳", "毒手", "パタ", "秘文字のパタ"],
+            "格闘": ["落葉格闘", "ダン流蹴術"],
+            "爪": ["鉤爪", "毒蛇の牙", "猛禽の鉤爪", "夜の爪", "猟犬の爪"],
+            "獣爪": ["赤熊の爪", "獣の爪"],
+            "調香瓶": ["雷の調香瓶", "狂い火の調香瓶", "火花の調香瓶", "猛毒の調香瓶", "冷気の調香瓶"],
+            "刺突盾": ["カーリアの刺突盾", "デュエリングシールド"]
+        };
+        
+        // 全武器リストを作成
+        let allWeapons = [];
+        for (const category in weaponCategories) {
+            allWeapons = allWeapons.concat(weaponCategories[category]);
+        }
+        
+        // DOM要素
+        const wheel = document.getElementById('wheel');
+        const startBtn = document.getElementById('startBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        const resultDisplay = document.getElementById('result');
+        const categoryButtons = document.querySelectorAll('.category-btn');
+        
+        let spinning = false;
+        let currentRotation = 0;
+        let rotationSpeed = 0;
+        let selectedCategory = 'all';
+        let currentWeapons = [...allWeapons];
+        let animationId = null;
+        
+        // カテゴリボタンのイベントリスナー
+        categoryButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                if (spinning) return;
+                
+                // アクティブクラスをトグル
+                categoryButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                
+                selectedCategory = button.getAttribute('data-category');
+                
+                // 武器リストを更新
+                if (selectedCategory === 'all') {
+                    currentWeapons = [...allWeapons];
+                } else {
+                    currentWeapons = [...weaponCategories[selectedCategory]];
+                }
+                
+                // ホイールを再描画
+                updateWheel();
+                resultDisplay.textContent = '-';
+            });
+        });
+        
+        // ルーレットを更新する関数
+        function updateWheel() {
+            // ホイールをクリア
+            while (wheel.firstChild) {
+                wheel.removeChild(wheel.firstChild);
+            }
+            
+            // 中心と外枠を追加
+            const wheelCenter = document.createElement('div');
+            wheelCenter.className = 'wheel-center';
+            wheel.appendChild(wheelCenter);
+            
+            const wheelRing = document.createElement('div');
+            wheelRing.className = 'wheel-ring';
+            wheel.appendChild(wheelRing);
+            
+            // 武器を追加
+            const weaponsToShow = currentWeapons.length > 40 ? 
+                currentWeapons.slice(0, 40) : currentWeapons;
+            
+            const angleStep = 360 / weaponsToShow.length;
+            
+            weaponsToShow.forEach((weapon, index) => {
+                const angle = index * angleStep;
+                const item = document.createElement('div');
+                item.className = 'wheel-item';
+                item.setAttribute('data-weapon', weapon);
+                item.style.transform = `rotate(${angle}deg)`;
+                
+                const text = document.createElement('div');
+                text.className = 'weapon-text';
+                text.textContent = weapon;
+                item.appendChild(text);
+                
+                wheel.appendChild(item);
+            });
+        }
+        
+        // 初期ホイールを描画
+        updateWheel();
+        
+        // スタートボタンのイベントリスナー
+        startBtn.addEventListener('click', () => {
+            if (spinning) return;
+            
+            spinning = true;
+            rotationSpeed = 40 + Math.random() * 30; // 高速回転
+            animateWheel();
+        });
+        
+        // ストップボタンのイベントリスナー
+        stopBtn.addEventListener('click', () => {
+            if (!spinning) return;
+            
+            // 減速して停止 (より速く停止するように調整)
+            const slowDown = () => {
+                rotationSpeed *= 0.7; // 減速率を上げる (0.95→0.7)
+                
+                if (rotationSpeed < 0.5) {
+                    spinning = false;
+                    cancelAnimationFrame(animationId);
+                    
+                    // 結果を決定
+                    determineResult();
+                } else {
+                    setTimeout(slowDown, 30); // 減速間隔を短くする (100→30)
+                }
+            };
+            
+            slowDown();
+        });
+        
+        // ホイールのアニメーション
+        function animateWheel() {
+            currentRotation += rotationSpeed;
+            wheel.style.transform = `rotate(${currentRotation}deg)`;
+            
+            if (spinning) {
+                animationId = requestAnimationFrame(animateWheel);
+            }
+        }
+        
+        // 結果を決定する関数
+        function determineResult() {
+            // 回転角度から選ばれた武器を計算
+            const normalizedRotation = currentRotation % 360;
+            const itemCount = currentWeapons.length > 40 ? 40 : currentWeapons.length;
+            const angleStep = 360 / itemCount;
+            
+            // インデックスを計算（回転方向とポインタの位置を考慮）
+            const index = Math.floor((360 - normalizedRotation) / angleStep) % itemCount;
+            
+            // 結果を表示
+            let selectedWeapon;
+            if (currentWeapons.length > 40) {
+                // 表示している40個の中から選ぶが、実際はフルリストからランダム選択
+                selectedWeapon = currentWeapons[Math.floor(Math.random() * currentWeapons.length)];
+            } else {
+                selectedWeapon = currentWeapons[index];
+            }
+            
+            resultDisplay.textContent = selectedWeapon;
+        }
+    </script>
+</body>
+</html>
