@@ -1,10 +1,11 @@
+
 <!DOCTYPE html>
-<!-- saved from url=(0032)https://wapurboc.genspark.space/ -->
-<html lang="ja"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>エルデンリング武器ルーレット</title>
-    <link href="./エルデンリング武器ルーレット_files/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
         body {
             background-color: #1a1f2e;
@@ -158,12 +159,12 @@
     </div>
     
     <div class="category-container flex flex-wrap justify-center mb-6">
-        <button class="category-btn" data-category="all">全て</button>
+        <button class="category-btn active" data-category="all">全て</button>
         <button class="category-btn" data-category="短剣">短剣</button>
         <button class="category-btn" data-category="投擲剣">投擲剣</button>
         <button class="category-btn" data-category="直剣">直剣</button>
         <button class="category-btn" data-category="軽大剣">軽大剣</button>
-        <button class="category-btn active" data-category="大剣">大剣</button>
+        <button class="category-btn" data-category="大剣">大剣</button>
         <button class="category-btn" data-category="特大剣">特大剣</button>
         <button class="category-btn" data-category="刺剣">刺剣</button>
         <button class="category-btn" data-category="重刺剣">重刺剣</button>
@@ -194,7 +195,11 @@
     
     <div class="wheel-container">
         <div class="pointer"></div>
-        <div class="wheel" id="wheel" style="transform: rotate(137334deg);"><div class="wheel-center"></div><div class="wheel-ring"></div><div class="wheel-item" data-weapon="暗月の大剣" style="transform: rotate(0deg);"><div class="weapon-text">暗月の大剣</div></div><div class="wheel-item" data-weapon="黄金律の大剣" style="transform: rotate(15deg);"><div class="weapon-text">黄金律の大剣</div></div><div class="wheel-item" data-weapon="大トカゲの大剣" style="transform: rotate(30deg);"><div class="weapon-text">大トカゲの大剣</div></div><div class="wheel-item" data-weapon="オルドビスの大剣" style="transform: rotate(45deg);"><div class="weapon-text">オルドビスの大剣</div></div><div class="wheel-item" data-weapon="ガーゴイルの黒剣" style="transform: rotate(60deg);"><div class="weapon-text">ガーゴイルの黒剣</div></div><div class="wheel-item" data-weapon="ガーゴイルの大剣" style="transform: rotate(75deg);"><div class="weapon-text">ガーゴイルの大剣</div></div><div class="wheel-item" data-weapon="神の遺剣" style="transform: rotate(90deg);"><div class="weapon-text">神の遺剣</div></div><div class="wheel-item" data-weapon="騎士大剣" style="transform: rotate(105deg);"><div class="weapon-text">騎士大剣</div></div><div class="wheel-item" data-weapon="クレイモア" style="transform: rotate(120deg);"><div class="weapon-text">クレイモア</div></div><div class="wheel-item" data-weapon="君主軍の大剣" style="transform: rotate(135deg);"><div class="weapon-text">君主軍の大剣</div></div><div class="wheel-item" data-weapon="劫罰の大剣" style="transform: rotate(150deg);"><div class="weapon-text">劫罰の大剣</div></div><div class="wheel-item" data-weapon="孤牢の大剣" style="transform: rotate(165deg);"><div class="weapon-text">孤牢の大剣</div></div><div class="wheel-item" data-weapon="死かき棒" style="transform: rotate(180deg);"><div class="weapon-text">死かき棒</div></div><div class="wheel-item" data-weapon="失地騎士の大剣" style="transform: rotate(195deg);"><div class="weapon-text">失地騎士の大剣</div></div><div class="wheel-item" data-weapon="鉄の大剣" style="transform: rotate(210deg);"><div class="weapon-text">鉄の大剣</div></div><div class="wheel-item" data-weapon="白王の剣" style="transform: rotate(225deg);"><div class="weapon-text">白王の剣</div></div><div class="wheel-item" data-weapon="バスタードソード" style="transform: rotate(240deg);"><div class="weapon-text">バスタードソード</div></div><div class="wheel-item" data-weapon="二又の大剣" style="transform: rotate(255deg);"><div class="weapon-text">二又の大剣</div></div><div class="wheel-item" data-weapon="フランベルジュ" style="transform: rotate(270deg);"><div class="weapon-text">フランベルジュ</div></div><div class="wheel-item" data-weapon="ヘルフェンの尖塔" style="transform: rotate(285deg);"><div class="weapon-text">ヘルフェンの尖塔</div></div><div class="wheel-item" data-weapon="冒涜の聖剣" style="transform: rotate(300deg);"><div class="weapon-text">冒涜の聖剣</div></div><div class="wheel-item" data-weapon="マレー家の執行剣" style="transform: rotate(315deg);"><div class="weapon-text">マレー家の執行剣</div></div><div class="wheel-item" data-weapon="ミエロスの剣" style="transform: rotate(330deg);"><div class="weapon-text">ミエロスの剣</div></div><div class="wheel-item" data-weapon="分かたれぬ双児の剣" style="transform: rotate(345deg);"><div class="weapon-text">分かたれぬ双児の剣</div></div></div>
+        <div class="wheel" id="wheel">
+            <div class="wheel-ring"></div>
+            <div class="wheel-center"></div>
+            <!-- Weapon items will be generated here by JavaScript -->
+        </div>
     </div>
     
     <div class="flex justify-center mt-8">
@@ -204,7 +209,7 @@
     
     <div class="result-box w-full max-w-lg text-center mt-10">
         <h2 class="text-xl mb-4">選ばれた武器</h2>
-        <div id="result" class="text-yellow-400 text-2xl font-bold">死かき棒</div>
+        <div id="result" class="text-yellow-400 text-2xl font-bold">-</div>
     </div>
     
     <script>
@@ -391,12 +396,12 @@
             resultDisplay.textContent = selectedWeapon;
         }
     </script>
-
-
+</body>
+</html>
     <script id="html_badge_script1">
         window.__genspark_remove_badge_link = "https://www.genspark.ai/api/html_badge/" +
             "remove_badge?token=To%2FBnjzloZ3UfQdcSaYfDhoY5ji8ZYiAOqN1nR6ZJ1nAbtxn4SLh2zpcJuQOJF%2FE%2FG0dqXC8AJHhS90IH5Vf4D62rYp2ilmlX251VFX%2B6T0S0Zk91YnHcavPOuLPYhjSuJr0Gwv%2BolevshxbZtupT2M8Dz1RMy5oCL3XjuAWTdCMERjNW4loTaJGrJbgI2V%2ByzJjTyF1XRJuwh0BpbuMPJhOUD8bb9YaQxXfcO9siPRwOZtdWjb9m6FlOsqmujqV57kUH6JF0AahE%2B6orTaas8zJROoMmA0Q1NJ39wds43KEpnCk30CZql6L9kL5RKiF7G5UZ%2Bnq3vQAUELykXogyfPju9wcTER1OZIxY%2BCFLzmbhqleUykzMAFncA0IeHsq3u7Ke53%2Bz1yLWfyROS1GDj2TzMXu1%2FnWyu%2B2TUxgSaUDDolvCAFhQ1ei5cCEQoj4vzx%2FXlzIXUIBy4jTHCp1ZApdEalTY1snbcTZEflAQJwrQQMIY4zgqxFN1zan7IjJQuK2XO9NuWxdO4lwFR0eSOXkdhLvWsy1QgWEKhAgaWY%3D";
         window.__genspark_locale = "ja-JP";
         window.__genspark_token = "To/BnjzloZ3UfQdcSaYfDhoY5ji8ZYiAOqN1nR6ZJ1nAbtxn4SLh2zpcJuQOJF/E/G0dqXC8AJHhS90IH5Vf4D62rYp2ilmlX251VFX+6T0S0Zk91YnHcavPOuLPYhjSuJr0Gwv+olevshxbZtupT2M8Dz1RMy5oCL3XjuAWTdCMERjNW4loTaJGrJbgI2V+yzJjTyF1XRJuwh0BpbuMPJhOUD8bb9YaQxXfcO9siPRwOZtdWjb9m6FlOsqmujqV57kUH6JF0AahE+6orTaas8zJROoMmA0Q1NJ39wds43KEpnCk30CZql6L9kL5RKiF7G5UZ+nq3vQAUELykXogyfPju9wcTER1OZIxY+CFLzmbhqleUykzMAFncA0IeHsq3u7Ke53+z1yLWfyROS1GDj2TzMXu1/nWyu+2TUxgSaUDDolvCAFhQ1ei5cCEQoj4vzx/XlzIXUIBy4jTHCp1ZApdEalTY1snbcTZEflAQJwrQQMIY4zgqxFN1zan7IjJQuK2XO9NuWxdO4lwFR0eSOXkdhLvWsy1QgWEKhAgaWY=";
     </script>
-    </body></html>
+    
